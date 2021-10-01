@@ -122,7 +122,9 @@ class Skipganomaly(BaseModel):
         self.err_d_real = self.l_adv(self.pred_real, self.real_label)
 
         # Combine losses.
-        self.err_d = self.err_d_real + self.err_d_fake + self.err_g_lat
+        import copy
+        tmp_err_g_lat = copy.copy(self.err_g_lat)
+        self.err_d = self.err_d_real + self.err_d_fake + tmp_err_g_lat
         self.err_d.backward(retain_graph=True)
 
     def update_netg(self):
